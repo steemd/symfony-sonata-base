@@ -7,18 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
-{
-    // 
-    //  Route("/", name="homepage")
-    //  
-    // public function indexAction(Request $request)
-    // {
-    //     // replace this example code with whatever you need
-    //     return $this->render('default/index.html.twig', array(
-    //         'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-    //     ));
-    // }
-
+{    
     /**
      * @Route("/", name="home")
      */
@@ -32,7 +21,11 @@ class DefaultController extends Controller
      */
     public function testAction(Request $request)
     {
-        return $this->render('AppBundle:default:test.html.twig');
+       
+       $posts = $this->getDoctrine()->getRepository('AppBundle:BlogPost')->findAll();
+       $categories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
+
+        return $this->render('AppBundle:default:test.html.twig', array('posts' => $posts, 'categories' => $categories));
     }
 
     /**
@@ -40,7 +33,12 @@ class DefaultController extends Controller
      */
     public function someAction(Request $request)
     {
-        return $this->render('AppBundle:default:some.html.twig');
+        // show parameters
+
+        $fname = $this->getParameter('fname');
+        $lname = $this->getParameter('lname');
+
+        return $this->render('AppBundle:default:some.html.twig', array('fname' => $fname, 'lname' => $lname));
     }
 
 }
