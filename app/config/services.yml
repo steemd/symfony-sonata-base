@@ -14,7 +14,7 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Show Category }
 
-    admin.post:
+    admin.blog.post:
         class: AppBundle\Admin\BlogPostAdmin
         arguments: [~, AppBundle\Entity\BlogPost, ~]
         tags:
