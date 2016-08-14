@@ -66,9 +66,83 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+#Sonata configuration
 sonata_block:
     default_contexts: [cms]
     blocks:
         # enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts: [admin]
+
+knp_menu:
+    # use "twig: false" to disable the Twig extension and the TwigRenderer
+    twig:
+        template: knp_menu.html.twig
+    #  if true, enables the helper for PHP templates
+    templating: false
+    # the renderer to use, list is also available by default
+    default_renderer: twig
+
+sonata_admin:
+    title:      'Admin panel'
+    title_logo: img/logo_small.png
+    options:
+        html5_validate:       true
+        # Auto order groups and admins by label or id
+        sort_admins:          false
+        confirm_exit:         true
+        use_select2:          true
+        use_icheck:           true
+        use_bootlint:         false
+        use_stickyforms:      true
+        form_type:            standard
+        dropdown_number_groups_per_colums:  2
+    
+    templates:
+        dashboard: SonataAdminBundle:Core:dashboard.html.twig
+        knp_menu_template: SonataAdminBundle:Menu:sonata_menu.html.twig
+        layout:  SonataAdminBundle::standard_layout.html.twig
+
+    dashboard:
+        blocks:
+            # display two dashboard blocks
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: [my_name1, my_name2] # or [Category, Posr]
+            -
+                position: right # top (show on top position)
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: [my_name2]  # or [Post]
+
+        groups:
+            my_menu: # or - Category
+                provider:        app.menu_builder
+                icon:            '<i class="fa fa-edit"></i>'
+
+            my_name1: # or - Category
+                label:                ~
+                label_catalogue:      ~
+                items:
+                    - admin.category
+                    - route:        home
+                      label:        Blog
+                    - route:        test
+                      route_params: { articleId: 3 }
+                      label:        Article
+
+            my_name2: # or - Post
+                items:
+                    - admin.blog.post
+                    - admin.blog.post
+                    - admin.blog.post
+                    - admin.blog.post
+
+            my_menu:
+
+                items:
+                    - admin.blog.post
+                    - admin.blog.post
+ 
